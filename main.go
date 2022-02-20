@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"pomodoro-timer/timer"
 	"time"
 
 	"github.com/inancgumus/screen"
@@ -19,19 +20,19 @@ func main() {
 	welcomeMessage()
 	time.Sleep(7 * time.Second)
 
-	t := timer{
-		start:       time.Now(),
-		workingMode: true,
+	t := timer.Timer{
+		Start:       time.Now(),
+		WorkingMode: true,
 	}
 	prevElapsedTime := 0
 	for {
-		elapsedTime := t.getElapsedTimeInSeconds()
+		elapsedTime := t.GetElapsedTimeInSeconds()
 		if elapsedTime != prevElapsedTime {
-			t.printTimeRemaining(elapsedTime)
+			t.PrintTimeRemaining(elapsedTime)
 			prevElapsedTime = elapsedTime
-			if t.shouldSwitchMode(elapsedTime) {
-				t.alert()
-				t.switchMode()
+			if t.ShouldSwitchMode(elapsedTime) {
+				t.Alert()
+				t.SwitchMode()
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-package main
+package timer
 
 import (
 	"fmt"
@@ -9,27 +9,27 @@ import (
 	"github.com/gen2brain/beeep"
 )
 
-type timer struct {
-	start       time.Time
-	workingMode bool
+type Timer struct {
+	Start       time.Time
+	WorkingMode bool
 }
 
 //Will get the elasped time in seconds
-func (t timer) getElapsedTimeInSeconds() int {
-	return int(time.Since(t.start).Seconds())
+func (t Timer) GetElapsedTimeInSeconds() int {
+	return int(time.Since(t.Start).Seconds())
 }
 
 //function to switch mode
-func (t *timer) switchMode() {
-	t.start = time.Now()
-	t.workingMode = !t.workingMode
+func (t *Timer) SwitchMode() {
+	t.Start = time.Now()
+	t.WorkingMode = !t.WorkingMode
 }
 
 //alert function will show a message depending on which mode it's on
-func (t timer) alert() {
+func (t Timer) Alert() {
 	message := " - It's time to take a break"
-	t.beepAlert(message)
-	if !t.workingMode {
+	t.BeepAlert(message)
+	if !t.WorkingMode {
 		message = " - New session starting"
 	}
 	fmt.Println(message)
@@ -37,12 +37,12 @@ func (t timer) alert() {
 }
 
 //beepAlert function will beep once when it's time for a pause and two times when its time to get back to work
-func (t timer) beepAlert(message string) {
+func (t Timer) BeepAlert(message string) {
 	os := runtime.GOOS
 	if os == "darwin" {
 		go exec.Command("say", message).Output()
 	}
-	if !t.workingMode {
+	if !t.WorkingMode {
 		beeep.Beep(beeep.DefaultFreq, beeep.DefaultDuration)
 		beeep.Beep(beeep.DefaultFreq, beeep.DefaultDuration)
 	} else {
@@ -55,32 +55,32 @@ const sessionDuration = 25 * 60 // 25 minutes
 const pausDuration = 5 * 60     // 15 minutes
 
 //switches mode depending on the elapsed time
-func (t timer) shouldSwitchMode(elapsedTime int) bool {
-	return elapsedTime == t.getDuration()
+func (t Timer) ShouldSwitchMode(elapsedTime int) bool {
+	return elapsedTime == t.GetDuration()
 }
 
 //setting the duration variable depending on the mode
-func (t timer) getDuration() int {
+func (t Timer) GetDuration() int {
 	duration := sessionDuration
-	if !t.workingMode {
+	if !t.WorkingMode {
 		duration = pausDuration
 	}
 	return duration
 }
 
 //printing out which mode you're on
-func (t timer) getMode() string {
+func (t Timer) GetMode() string {
 	mode := "WORK MODE"
-	if !t.workingMode {
+	if !t.WorkingMode {
 		mode = "PAUS TIME"
 	}
 	return mode
 }
 
 //printing out and formatting time
-func (t timer) printTimeRemaining(elapsed int) {
-	timeRemaining := t.getDuration() - elapsed
+func (t Timer) PrintTimeRemaining(elapsed int) {
+	timeRemaining := t.GetDuration() - elapsed
 	minutes := timeRemaining / 60
 	seconds := timeRemaining % 60
-	fmt.Printf("\r%v: %02d:%02d ", t.getMode(), minutes, seconds)
+	fmt.Printf("\r%v: %02d:%02d ", t.GetMode(), minutes, seconds)
 }
