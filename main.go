@@ -9,7 +9,7 @@ import (
 
 func welcomeMessage() {
 	fmt.Println("-----------------------------------------------")
-	fmt.Println("The POMODORO timer will start in about 5 seconds\n1 beep means it's time for a pause of 5 minutes\n2 beeps means it's time to get back to work.\n 'CTRL + C' to exit the program ")
+	fmt.Println("The POMODORO timer will start in about 5 seconds\n1 beep means it's time for a pause of 5 minutes\n2 beeps means it's time to get back to work.\n 'CTRL + C' to exit the program - GOOD LUCK!")
 	fmt.Println("-----------------------------------------------")
 }
 
